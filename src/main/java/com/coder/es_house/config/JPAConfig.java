@@ -29,11 +29,14 @@ public class JPAConfig {
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
-
+    // 生成实体类的管理工厂 因为我们JPA的实现方式是hibernate 所以需要 hibernate adapter
+    //
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+        //不要自动化生成sql (所有的sql 控制权掌握在自己手里)
         jpaVendorAdapter.setGenerateDdl(false);
+        // 实例化一下 实体映射管理工厂类
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
         entityManagerFactory.setDataSource(dataSource());
@@ -42,6 +45,7 @@ public class JPAConfig {
         return entityManagerFactory;
     }
 
+    // 配合事务注解 生成事务管理的类 spring 注入实体管理类
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
         JpaTransactionManager transactionManager = new JpaTransactionManager();
