@@ -32,7 +32,7 @@ public class JPAConfig {
     // 生成实体类的管理工厂 因为我们JPA的实现方式是hibernate 所以需要 hibernate adapter
     //
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         //不要自动化生成sql (所有的sql 控制权掌握在自己手里)
         jpaVendorAdapter.setGenerateDdl(false);
