@@ -1,7 +1,5 @@
 package com.coder.es_house.entity;
 
-import com.sun.deploy.xml.GeneralEntity;
-
 import javax.persistence.*;
 import java.util.Date;
 
