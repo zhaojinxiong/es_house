@@ -1,7 +1,12 @@
 package com.coder.es_house.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author:apple
@@ -10,7 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
     // 要兼容H2 所以使用 IDENTITY
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +40,9 @@ public class User {
 
     private String avatar;
 
+    @Transient
+    private List<GrantedAuthority> grantedAuthorityList;
+
     public Long getId() {
         return id;
     }
@@ -51,8 +59,46 @@ public class User {
         this.name = name;
     }
 
+    public List<GrantedAuthority> getGrantedAuthorityList() {
+        return grantedAuthorityList;
+    }
+
+    public void setGrantedAuthorityList(List<GrantedAuthority> grantedAuthorityList) {
+        this.grantedAuthorityList = grantedAuthorityList;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.grantedAuthorityList;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

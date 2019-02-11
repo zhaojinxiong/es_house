@@ -20,4 +20,9 @@ public class AdminController {
     public  String adminWelcome(){
         return "admin/welcome";
     }
+
+    @GetMapping("/admin/login")
+    public String adminLoginPage(){
+        return "admin/login";
+    }
 }
