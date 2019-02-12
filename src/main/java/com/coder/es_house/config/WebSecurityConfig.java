@@ -1,6 +1,7 @@
 package com.coder.es_house.config;
 
 import com.coder.es_house.security.AuthProvider;
+import com.coder.es_house.security.LoginUrlEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -35,7 +36,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .and()
                         .formLogin()
                         .loginProcessingUrl("/login") // 配置角色登录处理入口
-                        .and();
+                        .and()
+                        .logout()
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/logout/page")
+                        .deleteCookies("JESSIONID")
+                        .invalidateHttpSession(true)
+                        .and()
+                        .exceptionHandling()
+                        .authenticationEntryPoint(loginUrlEntryPoint())
+                        .accessDeniedPage("/403");
+
 
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
@@ -52,5 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthProvider authProvider(){
         return  new AuthProvider();
+    }
+
+    @Bean
+    public LoginUrlEntryPoint loginUrlEntryPoint(){
+        return  new LoginUrlEntryPoint("user/login");
     }
 }

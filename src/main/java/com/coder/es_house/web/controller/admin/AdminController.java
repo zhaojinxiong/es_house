@@ -25,4 +25,11 @@ public class AdminController {
     public String adminLoginPage(){
         return "admin/login";
     }
+
+    @GetMapping("/logout/page")
+    public String logoutPage(){
+
+        return  "logout";
+    }
+
 }

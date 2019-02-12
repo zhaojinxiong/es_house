@@ -36,7 +36,6 @@ public class AuthProvider implements AuthenticationProvider {
         }
         // 加盐
         if(this.passwordEncoder.isPasswordValid(user.getPassword(),inputPassword,user.getId())){
-
             return  new UsernamePasswordAuthenticationToken(user,user.getPassword(),user.getAuthorities());
         }
         throw new BadCredentialsException("密码错误或用户名不正确");
