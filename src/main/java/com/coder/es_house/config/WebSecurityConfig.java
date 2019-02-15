@@ -1,6 +1,7 @@
 package com.coder.es_house.config;
 
 import com.coder.es_house.security.AuthProvider;
+import com.coder.es_house.security.LoginAuthFailHandler;
 import com.coder.es_house.security.LoginUrlEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .and()
                         .formLogin()
                         .loginProcessingUrl("/login") // 配置角色登录处理入口
+                        .failureHandler(loginAuthFailHandler())
                         .and()
                         .logout()
                         .logoutUrl("/logout")
@@ -68,5 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginUrlEntryPoint loginUrlEntryPoint(){
         return  new LoginUrlEntryPoint("user/login");
+    }
+
+    @Bean
+    public LoginAuthFailHandler loginAuthFailHandler(){
+        return  new LoginAuthFailHandler(loginUrlEntryPoint());
     }
 }

@@ -38,7 +38,6 @@ public class JPAConfig {
         jpaVendorAdapter.setGenerateDdl(false);
         // 实例化一下 实体映射管理工厂类
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-
         entityManagerFactory.setDataSource(dataSource());
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactory.setPackagesToScan("com.coder.es_house.entity");
