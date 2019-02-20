@@ -115,6 +115,13 @@
             <artifactId>thymeleaf-spring4</artifactId>
             <version>3.0.2.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.2.0, 7.2.99]</version>
+        </dependency>
+
     </dependencies>
 
     <build>
