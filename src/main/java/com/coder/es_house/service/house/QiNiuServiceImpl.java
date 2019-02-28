@@ -1,6 +1,8 @@
 package com.coder.es_house.service.house;
 
+import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
+import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Response;
 import java.io.File;
 import java.io.InputStream;
 
@@ -22,6 +23,10 @@ import java.io.InputStream;
  */
 @Service
 public class QiNiuServiceImpl implements IQiNiuService,InitializingBean {
+
+    @Autowired
+    private Gson gson;
+
 
     @Autowired
     private UploadManager uploadManager;
@@ -39,24 +44,37 @@ public class QiNiuServiceImpl implements IQiNiuService,InitializingBean {
 
     @Override
     public Response uploadFile(File file) throws QiniuException {
-        com.qiniu.http.Response response = this.uploadManager.put(file,null,getUploadToken());
-        int retry = 0;
 
+        Response response = this.uploadManager.put(file,null,getUploadToken());
+        int retry = 0;
         while (response.needRetry() && retry < 3){
             response = this.uploadManager.put(file,null,getUploadToken());
+            retry++;
+        }
+
+        return response;
+    }
+
+    @Override
+    public Response uploadFile(InputStream inputStream) throws QiniuException {
+
+        Response response = this.uploadManager.put(inputStream,null,getUploadToken(),null,null);
+        int retry = 0;
+        while (response.needRetry() && retry < 3){
+            response = this.uploadManager.put(inputStream,null,getUploadToken(),null,null);
             retry++;
         }
         return null;
     }
 
     @Override
-    public Response uploadFile(InputStream inputStream) throws QiniuException {
-        return null;
-    }
-
-    @Override
     public Response delete(String key) throws QiniuException {
-        return null;
+        Response response = bucketManager.delete(this.bucket,key);
+        int retry = 0;
+        while (response.needRetry() && retry++ <3){
+            response = bucketManager.delete(bucket,key);
+        }
+        return response;
     }
 
     @Override
