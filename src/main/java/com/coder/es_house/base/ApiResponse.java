@@ -17,7 +17,11 @@ public class ApiResponse {
         this.data = data;
         this.more = more;
     }
-
+    public ApiResponse(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
     public ApiResponse() {
         this.code = Status.SUCCESS.getCode();
         this.message = Status.SUCCESS.getStandardMessage();
